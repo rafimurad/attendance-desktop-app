@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Attendance Sheet Generator 1.0.2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-wrap">
+    <header class="app-header">
+      <h1>Attendance Sheet Generator</h1>
+      <p class="subtitle">Create printable sheets & export to PDF</p>
+    </header>
+
+    <section class="card controls">
+      <div class="section-head">
+        <h2>Names</h2>
+      </div>
+
+      <div class="name-add">
+        <input id="nameInput" type="text" placeholder="Add a name (e.g., MD. Murad)" />
+        <button class="btn btn-primary" id="addNameBtn">Add</button>
+      </div>
+
+      <div class="name-actions">
+        <button class="btn btn-soft" id="selectAllBtn">Select All</button>
+        <button class="btn btn-soft" id="clearSelectionBtn">Clear</button>
+        <button class="btn btn-danger-outline" id="deleteSelectedBtn">Delete Selected</button>
+      </div>
+
+      <div id="nameList" class="name-list"></div>
+
+      <hr class="sep"/>
+
+      <div class="grid-2">
+        <div>
+          <label class="label">Month</label>
+          <input type="month" id="month" />
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="generateBtn">Generate Attendance Sheet</button>
+          <button class="btn btn-dark" id="downloadBtn">Download PDF</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Generated pages -->
+    <section id="output"></section>
+  </div>
+
+  <!-- JS -->
+  <script src="./vendor/html2pdf.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

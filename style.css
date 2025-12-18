@@ -1,0 +1,171 @@
+/* ---------- Base ---------- */
+:root{
+  --bg:#0b1320;
+  --card:#ffffff;
+  --ink:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+
+  --green:#0f6b45;     /* banner green */
+  --primary-1:#22c55e; /* UI buttons (unchanged) */
+  --primary-2:#15803d;
+  --danger:#ef4444;
+  --dark:#111827;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:'Poppins', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #0ea5e920 0%, transparent 60%),
+    radial-gradient(800px 600px at 110% 10%, #22c55e22 0%, transparent 60%),
+    linear-gradient(180deg,#0b1320 0%, #0f172a 100%);
+}
+
+.app-wrap{max-width:1100px;margin:0 auto;padding:24px}
+.app-header{color:#fff;text-align:center;margin:8px 0 18px}
+.app-header h1{margin:0 0 6px;font-size:28px;letter-spacing:.3px;font-weight:700}
+.subtitle{margin:0;opacity:.85}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 10px 30px rgba(2,6,23,.08);
+}
+
+.controls{margin-bottom:18px}
+.section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:8px}
+.section-head h2{margin:0;font-size:18px;font-weight:700}
+.muted{color:var(--muted);font-size:13px}
+
+.name-add{display:flex;gap:10px; margin:10px 0}
+.name-add input{
+  flex:1; padding:12px 14px; border:1px solid var(--line); border-radius:12px; font-size:14px;
+}
+.label{display:block;margin-bottom:6px;color:var(--muted);font-size:13px}
+
+.name-list{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:8px; max-height:220px; overflow:auto; padding:6px; border:1px dashed var(--line);
+  border-radius:12px; background:#fafafa;
+}
+.name-item{
+  display:flex; align-items:center; gap:10px; padding:10px 12px;
+  border:1px solid #e9ecef; border-radius:10px; background:#fff;
+}
+.name-item input{width:16px;height:16px}
+
+/* Buttons */
+.btn{
+  border:0; padding:10px 14px; border-radius:999px; font-weight:600; cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+  box-shadow:0 6px 16px rgba(0,0,0,.08);
+}
+.btn:hover{transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn-primary{color:#fff;background-image:linear-gradient(135deg,var(--primary-1),var(--primary-2))}
+.btn-soft{background:#f3f4f6;color:#111827}
+.btn-danger-outline{background:#fff;color:var(--danger);border:1px solid #fecaca;box-shadow:none}
+/* .btn-dark{color:#fff;background:var(--dark)} */
+.btn-dark{color:#fff;background:#EF4444}
+
+.name-actions{display:flex; gap:10px; flex-wrap:wrap; margin:6px 0 12px}
+.grid-2{display:grid; grid-template-columns:1fr auto; gap:16px; align-items:end}
+.action-buttons{display:flex; gap:10px; flex-wrap:wrap}
+.sep{border:0;border-top:1px solid var(--line); margin:14px 0}
+
+/* ---------- Output pages ---------- */
+#output{margin:18px 0}
+/* ---- Exact A4 sizing to force 1 page per person ---- */
+/* --- A4 base (screen view) --- */
+.page{
+  /* calc width + padding = 8.27in (A4) so nothing gets cut */
+  width: calc(8.27in - 0.50in);
+  min-height: 11.69in;
+  max-height: 11.69in;
+  margin: 0 auto 0.25in;
+  padding: 0.25in;               /* 0.25 + 0.25 = 0.50in total */
+  background:#fff;
+  /* NOTE: border/shadow only for screen; PDF mode removes them */
+  border:1px solid #111;
+  border-radius:10px;
+  page-break-inside: avoid;
+  box-shadow:0 8px 28px rgba(15,23,42,.08);
+}
+
+/* Banner centered title + right month (unchanged) */
+.banner{
+  position: relative;
+  background:#0f6b45; color:#fff;
+  padding: 10px 16px; border-radius:8px; margin: 6px 0 6px;
+  height: 44px; display:flex; align-items:center; justify-content:flex-end;
+}
+.banner .title{ position:absolute; left:50%; transform:translateX(-50%); font-size:18px; font-weight:800; letter-spacing:.6px }
+.banner .month{ margin-left:auto; font-size:13px; font-weight:600 }
+
+/* Name line */
+.name-line{ text-align:center; font-size:18px; font-weight:800; letter-spacing:.4px; margin: 4px 0 6px }
+
+/* Table a bit taller to reduce bottom gap */
+.table{ width:100%; border-collapse:collapse; table-layout:fixed }
+.table th,.table td{
+  border:1px solid #111;
+  padding: 6px 4px;              /* was 4px -> 6px */
+  font-size: 13px;               /* was 12px -> 13px */
+  line-height: 1.15;
+  text-align:center; font-weight:600;
+}
+.table th{ font-weight:800; background:#fff }
+.friday{ background:#d32f2f !important; color:#fff !important; font-weight:800 }
+
+.footer-sign{ display:flex; gap:14px; margin-top:10px; font-size:12px }
+.footer-sign .line{ flex:1; border-top:1px dashed #111; padding-top:6px; text-align:center }
+
+/* ---------- PDF MODE ---------- */
+/* ডাউনলোড করার সময় body তে .pdf-mode ক্লাস লাগালে এগুলো চালু হবে */
+.pdf-mode{
+  background:#fff !important;
+}
+.pdf-mode .page{
+  width: 8.27in;                 /* exact A4 width */
+  margin: 0 auto;                /* center on page */
+  padding: 0.22in 0.28in;        /* ভিতরের প্যাডিং */
+  border: 0 !important;          /* ⛔ outer border/lines removed */
+  border-radius: 0 !important;
+  box-shadow: none !important;   /* ⛔ shadow removed */
+}
+
+
+/* Month input: simple, clean */
+#month{
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background:#fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color:#111827;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+#month:focus{
+  border-color:#10b981;
+  box-shadow: 0 0 0 3px rgba(16,185,129,.15);
+}
+
+/* credit line at bottom of each page */
+/* .credit-footer{
+  text-align:center;
+  font-size:12px;
+  color:#334155;
+  margin-top:8px;
+  padding-top:6px;
+  border-top:1px dotted #cbd5e1;
+}
+.credit-footer strong{font-weight:700} */

@@ -1,0 +1,48 @@
+{
+  "name": "attendance-desktop-app",
+  "version": "1.0.2",
+  "description": "Attendance Sheet Generator Desktop App",
+  "author": "BARABD",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "release": "npm version patch --no-git-tag-version && electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "devDependencies": {
+    "electron": "28.3.3",
+    "electron-builder": "24.13.3",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {
+    "electron-log": "^5.4.3",
+    "electron-updater": "^6.6.2"
+  },
+  "build": {
+    "appId": "com.murad.attendance",
+    "productName": "BARABD Attendance Sheet Generator",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "style.css",
+      "script.js",
+      "vendor/**",
+      "image/**"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "image/barabd.ico"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "rafimurad",
+        "repo": "attendance-desktop-app"
+      }
+    ]
+  }
+}
