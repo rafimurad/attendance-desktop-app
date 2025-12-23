@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Update Available</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .update-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .update-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 10px 40px rgba(34, 197, 94, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .update-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #fff;
+        }
+
+        .update-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #22c55e, #4ade80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .update-message {
+            font-size: 15px;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .update-version {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .progress-container {
+            display: none;
+            margin-bottom: 24px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+            flex: 1;
+            box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        /* Ready to Install State */
+        .ready-state .update-icon {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            box-shadow: 0 10px 40px rgba(59, 130, 246, 0.4);
+        }
+
+        .ready-state .update-title {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .ready-state .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+        }
+
+        .ready-state .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="update-card" id="updateCard">
+        <div class="update-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+        </div>
+
+        <h1 class="update-title" id="title">Update Available!</h1>
+        <div class="update-version" id="versionBadge">New Version</div>
+        <p class="update-message" id="message">A new version of Attendance Sheet Generator is available. Download now to
+            get the latest features and improvements.</p>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">Downloading... 0%</p>
+        </div>
+
+        <div class="btn-group" id="btnGroup">
+            <button class="btn btn-secondary" id="laterBtn">Later</button>
+            <button class="btn btn-primary" id="actionBtn">Download Now</button>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        const updateCard = document.getElementById('updateCard');
+        const title = document.getElementById('title');
+        const versionBadge = document.getElementById('versionBadge');
+        const message = document.getElementById('message');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const btnGroup = document.getElementById('btnGroup');
+        const laterBtn = document.getElementById('laterBtn');
+        const actionBtn = document.getElementById('actionBtn');
+
+        // Listen for update info
+        ipcRenderer.on('update-info', (event, info) => {
+            if (info.version) {
+                versionBadge.textContent = `v${info.version}`;
+            }
+        });
+
+        // Listen for download progress
+        ipcRenderer.on('download-progress', (event, percent) => {
+            progressContainer.style.display = 'block';
+            btnGroup.style.display = 'none';
+            progressFill.style.width = `${percent}%`;
+            progressText.textContent = `Downloading... ${Math.round(percent)}%`;
+        });
+
+        // Listen for update downloaded
+        ipcRenderer.on('update-downloaded', () => {
+            updateCard.classList.add('ready-state');
+            title.textContent = 'Ready to Install!';
+            message.textContent = 'The update has been downloaded. Restart the app now to apply the update.';
+            progressContainer.style.display = 'none';
+            btnGroup.style.display = 'flex';
+            actionBtn.textContent = 'Restart Now';
+            actionBtn.onclick = () => ipcRenderer.send('restart-app');
+        });
+
+        // Button actions
+        laterBtn.addEventListener('click', () => {
+            ipcRenderer.send('close-update-window');
+        });
+
+        actionBtn.addEventListener('click', () => {
+            ipcRenderer.send('start-download');
+            progressContainer.style.display = 'block';
+            btnGroup.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>

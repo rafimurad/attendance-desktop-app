@@ -1,6 +1,6 @@
 {
   "name": "attendance-desktop-app",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Attendance Sheet Generator Desktop App",
   "author": "BARABD",
   "main": "main.js",
@@ -29,6 +29,7 @@
     "files": [
       "main.js",
       "index.html",
+      "update.html",
       "style.css",
       "script.js",
       "vendor/**",
