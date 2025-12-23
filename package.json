@@ -1,6 +1,6 @@
 {
   "name": "attendance-desktop-app",
-  "version": "1.0.2",
+  "version": "1.0.8",
   "description": "Attendance Sheet Generator Desktop App",
   "author": "BARABD",
   "main": "main.js",
@@ -17,7 +17,8 @@
   },
   "dependencies": {
     "electron-log": "^5.4.3",
-    "electron-updater": "^6.6.2"
+    "electron-updater": "^6.6.2",
+    "html2pdf.js": "^0.12.1"
   },
   "build": {
     "appId": "com.murad.attendance",

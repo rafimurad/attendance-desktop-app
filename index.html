@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <title>Attendance Sheet Generator 1.0.2</title>
+  <title>Attendance Sheet Generator 1.0.8</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="app-wrap">
     <header class="app-header">
@@ -15,33 +17,147 @@
     </header>
 
     <section class="card controls">
-      <div class="section-head">
-        <h2>Names</h2>
-      </div>
-
-      <div class="name-add">
-        <input id="nameInput" type="text" placeholder="Add a name (e.g., MD. Murad)" />
-        <button class="btn btn-primary" id="addNameBtn">Add</button>
-      </div>
-
-      <div class="name-actions">
-        <button class="btn btn-soft" id="selectAllBtn">Select All</button>
-        <button class="btn btn-soft" id="clearSelectionBtn">Clear</button>
-        <button class="btn btn-danger-outline" id="deleteSelectedBtn">Delete Selected</button>
-      </div>
-
-      <div id="nameList" class="name-list"></div>
-
-      <hr class="sep"/>
-
-      <div class="grid-2">
-        <div>
-          <label class="label">Month</label>
-          <input type="month" id="month" />
+      <!-- Names Section Header -->
+      <div class="section-header">
+        <div class="section-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
         </div>
-        <div class="action-buttons">
-          <button class="btn btn-primary" id="generateBtn">Generate Attendance Sheet</button>
-          <button class="btn btn-dark" id="downloadBtn">Download PDF</button>
+        <div class="section-title">
+          <h2>Team Members</h2>
+          <p class="section-subtitle">Add names for attendance tracking</p>
+        </div>
+      </div>
+
+      <!-- Name Input Area -->
+      <div class="name-input-wrapper">
+        <div class="input-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <input id="nameInput" type="text" class="name-input-modern" placeholder="e.g., SM Murad" />
+        <button class="add-btn" id="addNameBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Add</span>
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="name-action-bar">
+        <button class="action-chip action-chip-select" id="selectAllBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          <span>Select All</span>
+        </button>
+        <button class="action-chip action-chip-clear" id="clearSelectionBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          </svg>
+          <span>Clear</span>
+        </button>
+        <button class="action-chip action-chip-delete" id="deleteSelectedBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+          <span>Delete</span>
+        </button>
+      </div>
+
+      <!-- Name List -->
+      <div id="nameList" class="name-grid"></div>
+
+      <hr class="sep" />
+
+      <!-- Generate Section - Redesigned with Custom Month Picker -->
+      <div class="generate-section">
+        <div class="month-picker-card">
+          <div class="month-picker-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
+          <div class="month-picker-content">
+            <label class="month-label">Select Month</label>
+            <p class="month-hint">Choose the month for attendance sheet</p>
+          </div>
+
+          <!-- Custom Month Picker -->
+          <div class="custom-month-picker" id="customMonthPicker">
+            <div class="picker-year-row">
+              <button type="button" class="picker-nav" id="prevYear">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="15 18 9 12 15 6"></polyline>
+                </svg>
+              </button>
+              <span class="picker-year" id="pickerYear">2026</span>
+              <button type="button" class="picker-nav" id="nextYear">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
+            </div>
+            <div class="picker-months" id="pickerMonths">
+              <button type="button" class="picker-month" data-month="01">Jan</button>
+              <button type="button" class="picker-month" data-month="02">Feb</button>
+              <button type="button" class="picker-month" data-month="03">Mar</button>
+              <button type="button" class="picker-month" data-month="04">Apr</button>
+              <button type="button" class="picker-month" data-month="05">May</button>
+              <button type="button" class="picker-month" data-month="06">Jun</button>
+              <button type="button" class="picker-month" data-month="07">Jul</button>
+              <button type="button" class="picker-month" data-month="08">Aug</button>
+              <button type="button" class="picker-month" data-month="09">Sep</button>
+              <button type="button" class="picker-month" data-month="10">Oct</button>
+              <button type="button" class="picker-month" data-month="11">Nov</button>
+              <button type="button" class="picker-month" data-month="12">Dec</button>
+            </div>
+          </div>
+
+          <!-- Hidden input for form value -->
+          <input type="hidden" id="month" />
+        </div>
+
+        <div class="action-row">
+          <button class="action-btn action-btn-generate" id="generateBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="12" y1="18" x2="12" y2="12"></line>
+              <line x1="9" y1="15" x2="15" y2="15"></line>
+            </svg>
+            <span>Generate Sheet</span>
+          </button>
+          <button class="action-btn action-btn-download" id="downloadBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download PDF</span>
+          </button>
         </div>
       </div>
     </section>
@@ -50,8 +166,14 @@
     <section id="output"></section>
   </div>
 
+  <!-- Footer Credit -->
+  <footer class="app-footer">
+    <span>Created by SM Murad</span>
+  </footer>
+
   <!-- JS -->
   <script src="./vendor/html2pdf.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>

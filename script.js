@@ -25,17 +25,94 @@ const downloadBtn = document.getElementById("downloadBtn");
 
 const output = document.getElementById("output");
 
+/* ---------------- Custom Month Picker Elements ---------------- */
+const customMonthPicker = document.getElementById("customMonthPicker");
+const pickerYear = document.getElementById("pickerYear");
+const prevYearBtn = document.getElementById("prevYear");
+const nextYearBtn = document.getElementById("nextYear");
+const pickerMonths = document.getElementById("pickerMonths");
+
+let currentPickerYear = new Date().getFullYear();
+let selectedMonth = null; // Format: "01" to "12"
+
 /* ---------------- Init ---------------- */
 (function init() {
   const savedMonth = localStorage.getItem(LS_KEYS.MONTH);
   if (savedMonth) {
+    const [year, month] = savedMonth.split("-");
+    currentPickerYear = parseInt(year, 10);
+    selectedMonth = month;
     monthEl.value = savedMonth;
   } else {
     const d = new Date();
-    monthEl.value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    currentPickerYear = d.getFullYear();
+    selectedMonth = String(d.getMonth() + 1).padStart(2, "0");
+    monthEl.value = `${currentPickerYear}-${selectedMonth}`;
   }
+
+  updatePickerUI();
   renderNameList();
 })();
+
+/* ---------------- Custom Month Picker Logic ---------------- */
+function updatePickerUI() {
+  pickerYear.textContent = currentPickerYear;
+
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = String(today.getMonth() + 1).padStart(2, "0");
+
+  document.querySelectorAll(".picker-month").forEach(btn => {
+    const month = btn.dataset.month;
+    btn.classList.remove("active", "current");
+
+    // Mark selected month
+    if (selectedMonth === month && monthEl.value && monthEl.value.startsWith(currentPickerYear)) {
+      btn.classList.add("active");
+    }
+
+    // Mark current month (today)
+    if (currentPickerYear === currentYear && month === currentMonth) {
+      btn.classList.add("current");
+    }
+  });
+}
+
+function selectMonth(month) {
+  selectedMonth = month;
+  monthEl.value = `${currentPickerYear}-${month}`;
+  localStorage.setItem(LS_KEYS.MONTH, monthEl.value);
+  updatePickerUI();
+}
+
+// Year navigation
+prevYearBtn.addEventListener("click", () => {
+  currentPickerYear--;
+  updatePickerUI();
+  // Update selected value if month was already selected
+  if (selectedMonth) {
+    monthEl.value = `${currentPickerYear}-${selectedMonth}`;
+    localStorage.setItem(LS_KEYS.MONTH, monthEl.value);
+  }
+});
+
+nextYearBtn.addEventListener("click", () => {
+  currentPickerYear++;
+  updatePickerUI();
+  // Update selected value if month was already selected
+  if (selectedMonth) {
+    monthEl.value = `${currentPickerYear}-${selectedMonth}`;
+    localStorage.setItem(LS_KEYS.MONTH, monthEl.value);
+  }
+});
+
+// Month selection
+pickerMonths.addEventListener("click", (e) => {
+  const btn = e.target.closest(".picker-month");
+  if (btn) {
+    selectMonth(btn.dataset.month);
+  }
+});
 
 /* ---------------- Render Name Checkboxes ---------------- */
 function renderNameList() {
@@ -105,6 +182,10 @@ clearSelectionBtn.addEventListener("click", () => { setSelected([]); renderNameL
 deleteSelectedBtn.addEventListener("click", () => {
   const selected = new Set(getSelected());
   if (!selected.size) return;
+
+  // ✅ Added Confirmation
+  if (!confirm(`Are you sure you want to delete ${selected.size} name(s)?`)) return;
+
   setNames(getNames().filter(n => !selected.has(n)));
   setSelected([]);
   renderNameList();
@@ -113,7 +194,7 @@ deleteSelectedBtn.addEventListener("click", () => {
 /* ---------------- Generate Sheets ---------------- */
 generateBtn.addEventListener("click", generate);
 downloadBtn.addEventListener("click", downloadPDF);
-monthEl.addEventListener("change", () => localStorage.setItem(LS_KEYS.MONTH, monthEl.value));
+// Note: monthEl change is handled by custom month picker
 
 function generate() {
   output.innerHTML = "";
@@ -176,15 +257,7 @@ function generate() {
 
     page.appendChild(table);
 
-    // (Optional signature block was commented out in your version)
-    const foot = document.createElement("div");
-    page.appendChild(foot);
 
-    /* ✅ credit line at bottom */
-    const credit = document.createElement("div");
-    credit.className = "credit-footer";
-    // credit.innerHTML = `Made by <strong>Murad</strong>`;
-    page.appendChild(credit);
 
     output.appendChild(page);
   });
@@ -202,12 +275,12 @@ function downloadPDF() {
   document.documentElement.classList.add('pdf-mode');
 
   const opt = {
-    margin:       0,                               // browser margin 0
-    filename:     'Attendance-Sheet.pdf',
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, useCORS: true },
-    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
-    pagebreak:    { mode: ['avoid-all'] }          // keep each .page to one A4
+    margin: 0,                               // browser margin 0
+    filename: 'Attendance-Sheet.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['avoid-all'] }          // keep each .page to one A4
   };
 
   html2pdf().set(opt).from(output).save().then(() => {
@@ -219,10 +292,10 @@ function downloadPDF() {
 }
 
 /* ---------------- Utils ---------------- */
-function escapeHtml(str){
-  return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
 }
-function formatMonthHyphen(year, monthIdx){
+function formatMonthHyphen(year, monthIdx) {
   const d = new Date(year, monthIdx, 1);
   const label = d.toLocaleString('en-US', { month: 'long' });
   return `${label}-${year}`;
